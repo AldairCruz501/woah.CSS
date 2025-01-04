@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa de Restaurantes en México</title>
+
+  <!-- Vinculamos el CSS de Bootstrap 5.3.2 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/estilos.css">
+
+  <!-- Vinculamos el CSS de Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  
+
+  
+  <!-- Estilos personalizados -->
+  <style>
+    #map {
+      height: 500px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container p-4">
+    <nav class="navbar navbar-expand-lg py-3 mb-2 fixed-top bg-white">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img class="logo-header" src="../img/logo.png" alt="logo-principal">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+                aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="../index.html">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../encabezados/encabezados.html">Encabezados</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../banners/banners.html">Banners</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../carruseles/carruseles.html">Carruseles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../contenido/contenido.html">Contenido</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="formularios.html">Formularios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../mapas/mapas.html">Mapas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../footers/footers.html">Footers</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>    
+
+  <div class="container mt-5">
+    <h1 class="text-center">Restaurantes en México</h1>
+    <div id="map"></div>
+  </div>
+
+  <!-- Scripts de Leaflet y Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    // Inicializamos el mapa
+    var map = L.map('map').setView([23.6345, -102.5528], 5); // Centrado en México
+
+    // Agregamos el fondo de mapa de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Coordenadas de 17 restaurantes (ejemplo)
+    var restaurantes = [
+      { nombre: "Restaurante 1", lat: 19.4326, lon: -99.1332, descripcion: "CDMX" },
+      { nombre: "Restaurante 2", lat: 20.6597, lon: -103.3496, descripcion: "Guadalajara" },
+      { nombre: "Restaurante 3", lat: 21.1619, lon: -86.8515, descripcion: "Cancún" },
+      { nombre: "Restaurante 4", lat: 25.6866, lon: -100.3161, descripcion: "Monterrey" },
+      { nombre: "Restaurante 5", lat: 19.0402, lon: -98.2063, descripcion: "Puebla" },
+      { nombre: "Restaurante 6", lat: 19.1827, lon: -96.1366, descripcion: "Veracruz" },
+      { nombre: "Restaurante 7", lat: 28.6228, lon: -106.0758, descripcion: "Chihuahua" },
+      { nombre: "Restaurante 8", lat: 32.5236, lon: -117.0382, descripcion: "Tijuana" },
+      { nombre: "Restaurante 9", lat: 18.2873, lon: -97.9297, descripcion: "Orizaba" },
+      { nombre: "Restaurante 10", lat: 22.1565, lon: -100.9833, descripcion: "San Luis Potosí" },
+      { nombre: "Restaurante 11", lat: 19.3123, lon: -99.7242, descripcion: "Ecatepec" },
+      { nombre: "Restaurante 12", lat: 19.9208, lon: -102.2680, descripcion: "Morelia" },
+      { nombre: "Restaurante 13", lat: 17.9894, lon: -92.9355, descripcion: "Tuxtla Gutierrez" },
+      { nombre: "Restaurante 14", lat: 16.7684, lon: -93.1161, descripcion: "Villahermosa" },
+      { nombre: "Restaurante 15", lat: 19.2395, lon: -98.0762, descripcion: "Tlaxcala" },
+      { nombre: "Restaurante 16", lat: 21.8780, lon: -102.2920, descripcion: "Aguascalientes" },
+      { nombre: "Restaurante 17", lat: 18.3771, lon: -97.2582, descripcion: "Xalapa" }
+    ];
+
+    // Agregar los marcadores al mapa
+    restaurantes.forEach(function(restaurante) {
+      L.marker([restaurante.lat, restaurante.lon])
+        .addTo(map)
+        .bindPopup('<b>' + restaurante.nombre + '</b><br>' + restaurante.descripcion);
+    });
+  </script>
+
+  <div class="container mt-5">
+    <h1 class="text-center">Zonas Turísticas en México</h1>
+    <div id="map-turismo" style="height: 500px; width: 100%;"></div>
+  </div>
+  
+  <script>
+    // Inicializamos un segundo mapa
+    var mapTurismo = L.map('map-turismo').setView([23.6345, -102.5528], 5);
+  
+    // Agregamos el fondo de mapa
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(mapTurismo);
+  
+    // Coordenadas de zonas turísticas
+    var zonasTuristicas = [
+      { nombre: "Chichén Itzá", lat: 20.6843, lon: -88.5678 },
+      { nombre: "Teotihuacán", lat: 19.6925, lon: -98.8436 },
+      { nombre: "Playa del Carmen", lat: 20.6296, lon: -87.0739 },
+      { nombre: "Copper Canyon", lat: 27.3958, lon: -107.7721 }
+    ];
+  
+    // Agregar marcadores
+    zonasTuristicas.forEach(function(zona) {
+      L.marker([zona.lat, zona.lon])
+        .addTo(mapTurismo)
+        .bindPopup('<b>' + zona.nombre + '</b>');
+    });
+  </script>
+
+<div class="container mt-5">
+  <h1 class="text-center">Hoteles en México</h1>
+  <div id="map-hoteles" style="height: 500px; width: 100%;"></div>
+</div>
+
+<script>
+  var mapHoteles = L.map('map-hoteles').setView([23.6345, -102.5528], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapHoteles);
+
+  // Coordenadas de hoteles
+  var hoteles = [
+    { nombre: "Hotel Reforma", lat: 19.426, lon: -99.167 },
+    { nombre: "Hotel Tulum Paradise", lat: 20.211, lon: -87.465 },
+    { nombre: "Hotel Guadalajara Plaza", lat: 20.672, lon: -103.370 }
+  ];
+
+  hoteles.forEach(function(hotel) {
+    L.marker([hotel.lat, hotel.lon])
+      .addTo(mapHoteles)
+      .bindPopup('<b>' + hotel.nombre + '</b>');
+  });
+</script>
+
+<div class="container mt-5">
+  <h1 class="text-center">Rutas de Transporte</h1>
+  <div id="map-rutas" style="height: 500px; width: 100%;"></div>
+</div>
+
+<script>
+  var mapRutas = L.map('map-rutas').setView([23.6345, -102.5528], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapRutas);
+
+  // Coordenadas de rutas de transporte
+  var ruta1 = [
+    [19.4326, -99.1332], // CDMX
+    [20.6597, -103.3496], // Guadalajara
+    [25.6866, -100.3161]  // Monterrey
+  ];
+
+  var ruta2 = [
+    [19.4326, -99.1332], // CDMX
+    [20.211, -87.465],   // Tulum
+    [21.1619, -86.8515]  // Cancún
+  ];
+
+  // Agregar líneas al mapa
+  L.polyline(ruta1, { color: 'blue' }).addTo(mapRutas).bindPopup("Ruta 1");
+  L.polyline(ruta2, { color: 'green' }).addTo(mapRutas).bindPopup("Ruta 2");
+</script>
+
+<div class="container mt-5">
+  <h1 class="text-center">Universidades en México</h1>
+  <div id="map-universidades" style="height: 500px; width: 100%;"></div>
+</div>
+
+<script>
+  var mapUniversidades = L.map('map-universidades').setView([23.6345, -102.5528], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapUniversidades);
+
+  var universidades = [
+    { nombre: "UNAM", lat: 19.3325, lon: -99.1872, ciudad: "Ciudad de México" },
+    { nombre: "ITESM", lat: 25.6501, lon: -100.2891, ciudad: "Monterrey" },
+    { nombre: "UdeG", lat: 20.6738, lon: -103.3356, ciudad: "Guadalajara" },
+    { nombre: "UANL", lat: 25.7255, lon: -100.3116, ciudad: "Monterrey" }
+  ];
+
+  universidades.forEach(function(uni) {
+    L.marker([uni.lat, uni.lon])
+      .addTo(mapUniversidades)
+      .bindPopup('<b>' + uni.nombre + '</b><br>' + uni.ciudad);
+  });
+</script>
+
+<div class="container mt-5">
+  <h1 class="text-center">Áreas Protegidas en México</h1>
+  <div id="map-protegidas" style="height: 500px; width: 100%;"></div>
+</div>
+
+<script>
+  var mapProtegidas = L.map('map-protegidas').setView([23.6345, -102.5528], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapProtegidas);
+
+  var areasProtegidas = [
+    { nombre: "Sian Ka'an", lat: 19.3616, lon: -87.6271, tipo: "Reserva de la Biosfera" },
+    { nombre: "El Pinacate", lat: 31.9164, lon: -113.3734, tipo: "Área Natural Protegida" },
+    { nombre: "Cañón del Sumidero", lat: 16.8351, lon: -93.0747, tipo: "Parque Nacional" }
+  ];
+
+  areasProtegidas.forEach(function(area) {
+    L.circleMarker([area.lat, area.lon], {
+      radius: 10,
+      color: "green",
+      fillColor: "green",
+      fillOpacity: 0.5
+    })
+    .addTo(mapProtegidas)
+    .bindPopup('<b>' + area.nombre + '</b><br>' + area.tipo);
+  });
+</script>
+
+<div class="container mt-5">
+  <h1 class="text-center">Centros Históricos de México</h1>
+  <div id="map-centros-historicos" style="height: 500px; width: 100%;"></div>
+</div>
+
+<script>
+  var mapCentrosHistoricos = L.map('map-centros-historicos').setView([23.6345, -102.5528], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapCentrosHistoricos);
+
+  var centrosHistoricos = [
+    { nombre: "Centro Histórico CDMX", lat: 19.4336, lon: -99.1332 },
+    { nombre: "Centro Histórico Puebla", lat: 19.0421, lon: -98.1971 },
+    { nombre: "Centro Histórico Oaxaca", lat: 17.0654, lon: -96.7253 },
+    { nombre: "Centro Histórico Querétaro", lat: 20.5870, lon: -100.3881 }
+  ];
+
+  centrosHistoricos.forEach(function(centro) {
+    L.marker([centro.lat, centro.lon])
+      .addTo(mapCentrosHistoricos)
+      .bindPopup('<b>' + centro.nombre + '</b>');
+  });
+</script>
+
+<div class="container mt-5">
+  <h1 class="text-center">Eventos Culturales</h1>
+  <div id="map-culturales" style="height: 500px; width: 100%;"></div>
+</div>
+
+<script>
+  var mapCulturales = L.map('map-culturales').setView([23.6345, -102.5528], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapCulturales);
+
+  var eventos = [
+    { nombre: "Festival Cervantino", lat: 21.0190, lon: -101.2574, fecha: "Octubre" },
+    { nombre: "Guelaguetza", lat: 17.0603, lon: -96.7216, fecha: "Julio" },
+    { nombre: "Festival del Día de Muertos", lat: 19.4213, lon: -99.1622, fecha: "Noviembre" }
+  ];
+
+  eventos.forEach(function(evento) {
+    L.marker([evento.lat, evento.lon])
+      .addTo(mapCulturales)
+      .bindPopup('<b>' + evento.nombre + '</b><br>' + evento.fecha);
+  });
+</script>
+
+<div class="container mt-5">
+  <h1 class="text-center">Áreas de Interés en México</h1>
+  <div id="map-areas" style="height: 500px; width: 100%;"></div>
+</div>
+
+<script>
+  var mapAreas = L.map('map-areas').setView([23.6345, -102.5528], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapAreas);
+
+  // Agregar círculos
+  L.circle([19.4326, -99.1332], { radius: 30000, color: 'red', fillOpacity: 0.4 })
+    .addTo(mapAreas)
+    .bindPopup('Área de CDMX');
+
+  L.circle([20.6597, -103.3496], { radius: 30000, color: 'blue', fillOpacity: 0.4 })
+    .addTo(mapAreas)
+    .bindPopup('Área de Guadalajara');
+
+  L.circle([25.6866, -100.3161], { radius: 30000, color: 'green', fillOpacity: 0.4 })
+    .addTo(mapAreas)
+    .bindPopup('Área de Monterrey');
+</script>
+
+<div class="container mt-5">
+  <h1 class="text-center">Hospitales en México</h1>
+  <div id="map-hospitales" style="height: 500px; width: 100%;"></div>
+</div>
+
+<script>
+  var mapHospitales = L.map('map-hospitales').setView([23.6345, -102.5528], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapHospitales);
+
+  var hospitales = [
+    { nombre: "Hospital General de México", lat: 19.4010, lon: -99.1536, especialidad: "General" },
+    { nombre: "Hospital Regional Monterrey", lat: 25.6825, lon: -100.3157, especialidad: "Pediatría" },
+    { nombre: "IMSS Guadalajara", lat: 20.6742, lon: -103.3872, especialidad: "Traumatología" }
+  ];
+
+  hospitales.forEach(function(hospital) {
+    L.marker([hospital.lat, hospital.lon])
+      .addTo(mapHospitales)
+      .bindPopup('<b>' + hospital.nombre + '</b><br>Especialidad: ' + hospital.especialidad);
+  });
+</script>
+
+<div class="container mt-5">
+  <h1 class="text-center">Clima en México</h1>
+  <div id="map-clima" style="height: 500px; width: 100%;"></div>
+</div>
+
+<script>
+  var mapClima = L.map('map-clima').setView([23.6345, -102.5528], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapClima);
+
+  // Iconos personalizados
+// Ícono de sol (sunny)
+var sunnyIcon = L.divIcon({
+  className: '', // Clase CSS opcional para estilo adicional
+  html: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-brightness-high-fill" viewBox="0 0 16 16">
+  // <path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+  // </svg>`,
+  iconSize: [40, 40],
+  iconAnchor: [20, 20] // Centro del SVG como punto de anclaje
+});
+
+// Ícono de lluvia (rainy)
+var rainyIcon = L.divIcon({
+  className: '',
+  html: `
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cloud-rain" viewBox="0 0 16 16">
+  <path d="M4.158 12.025a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317m3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 0 1-.948-.316l1-3a.5.5 0 0 1 .632-.317m3 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317m3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 1 1-.948-.316l1-3a.5.5 0 0 1 .632-.317m.247-6.998a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 11H13a3 3 0 0 0 .405-5.973M8.5 2a4 4 0 0 1 3.976 3.555.5.5 0 0 0 .5.445H13a2 2 0 0 1 0 4H3.5a2.5 2.5 0 1 1 .605-4.926.5.5 0 0 0 .596-.329A4 4 0 0 1 8.5 2"/>
+</svg>
+  `,
+  iconSize: [40, 40],
+  iconAnchor: [20, 20]
+});
+
+
+  // Datos de clima
+  var clima = [
+    { ciudad: "Cancún", lat: 21.1619, lon: -86.8515, icon: sunnyIcon },
+    { ciudad: "Guadalajara", lat: 20.6597, lon: -103.3496, icon: rainyIcon },
+    { ciudad: "Monterrey", lat: 25.6866, lon: -100.3161, icon: sunnyIcon }
+  ];
+
+  clima.forEach(function(c) {
+    L.marker([c.lat, c.lon], { icon: c.icon })
+      .addTo(mapClima)
+      .bindPopup('<b>' + c.ciudad + '</b>');
+  });
+</script>
+
+  
+</body>
+</html>
